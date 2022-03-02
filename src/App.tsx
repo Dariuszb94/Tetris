@@ -67,7 +67,6 @@ const App: React.FC = () => {
       } else if (keyCode === 39) {
         movePlayer(1);
       } else if (keyCode === 40) {
-        // Just call once
         if (repeat) return;
         setDroptime(30);
       } else if (keyCode === 38) {
