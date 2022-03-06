@@ -34,6 +34,7 @@ export const useStage = (player: PLAYER, resetPlayer: () => void) => {
           }
         });
       });
+      return newStage;
     };
   }, [player.collided, player?.pos.x, player?.pos.y, player.tetromino]);
 };
