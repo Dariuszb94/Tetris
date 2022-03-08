@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
 import { createStage } from './gameHelpers';
+
+//Custom hooks
+import { useInterval } from './hooks/useInterval';
+import { usePlayer } from './hooks/usePlayer';
+import { useStage } from './hooks/useStage';
+
 //Components
 import Stage from './components/Stage/Stage';
 import Display from './components/Display/Display';
