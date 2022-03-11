@@ -1,21 +1,20 @@
 import React from 'react';
 import { createStage } from '../gameHelpers';
-
-//Types
+// Types
 import type { PLAYER } from './usePlayer';
 
-import { STAGECELL } from '../components/Stage/Stage';
-import { STAGE } from '../components/Stage/Stage';
+export type STAGECELL = [string | number, string];
+export type STAGE = STAGECELL[][];
 
 export const useStage = (player: PLAYER, resetPlayer: () => void) => {
   const [stage, setStage] = React.useState(createStage());
+
   React.useEffect(() => {
     if (!player.pos) return;
 
     const updateStage = (prevStage: STAGE): STAGE => {
-      //First flush the stage
-      //If it says 'clear', but it don't have zero => it is a player's move
-
+      // First flush the stage
+      // If it says "clear" but don't have a 0 it means that it's the players move and should be cleared
       const newStage = prevStage.map(
         (row) =>
           row.map((cell) =>
@@ -34,8 +33,12 @@ export const useStage = (player: PLAYER, resetPlayer: () => void) => {
           }
         });
       });
+
       return newStage;
     };
+
     setStage((prev) => updateStage(prev));
-  }, [player.collided, player?.pos.x, player?.pos.y, player.tetromino]);
+  }, [player.collided, player.pos?.x, player.pos?.y, player.tetromino]);
+
+  return { stage, setStage };
 };

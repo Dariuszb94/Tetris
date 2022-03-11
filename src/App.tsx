@@ -17,7 +17,8 @@ import { StyledTetrisWrapper, StyledTetris } from './App.styles';
 const App: React.FC = () => {
   const [dropTime, setDropTime] = React.useState<null | number>(null);
   const [gameOver, setGameOver] = React.useState(true);
-
+  const { player, updatePlayerPos, resetPlayer } = usePlayer();
+  const { stage, setStage } = useStage(player, resetPlayer);
   return (
     <StyledTetrisWrapper role='button' tabIndex={0}>
       <StyledTetris>
