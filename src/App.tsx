@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { createStage } from './gameHelpers';
+import { createStage, isColliding } from './gameHelpers';
 
 //Custom hooks
 import { useInterval } from './hooks/useInterval';
@@ -22,8 +22,10 @@ const App: React.FC = () => {
 
   const { player, updatePlayerPos, resetPlayer } = usePlayer();
   const { stage, setStage } = useStage(player, resetPlayer);
+
   const movePlayer = (dir: number) => {
-    updatePlayerPos({ x: dir, y: 0, collided: false });
+    if (!isColliding(player, stage, { x: dir, y: 0 }))
+      updatePlayerPos({ x: dir, y: 0, collided: false });
   };
   const keyUp = ({ keyCode }: { keyCode: number }): void => {
     // Change the droptime speed when user releases down arrow
@@ -61,7 +63,16 @@ const App: React.FC = () => {
     }
   };
   const drop = (): void => {
-    updatePlayerPos({ x: 0, y: 1, collided: false });
+    if (!isColliding(player, stage, { x: 0, y: 1 }))
+      updatePlayerPos({ x: 0, y: 1, collided: false });
+    else {
+      if (player.pos.y < 1) {
+        console.log('game over');
+        setGameOver(true);
+        setDropTime(null);
+      }
+      updatePlayerPos({ x: 0, y: 0, collided: true });
+    }
   };
   useInterval(() => {
     drop();
