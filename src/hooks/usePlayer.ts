@@ -1,6 +1,7 @@
 import React from 'react';
 import { STAGE_WIDTH } from '../setup';
-import { randomTetromino } from '../gameHelpers';
+import { isColliding, randomTetromino } from '../gameHelpers';
+import { STAGE } from './useStage';
 
 export type PLAYER = {
   pos: {
@@ -12,6 +13,31 @@ export type PLAYER = {
 };
 export const usePlayer = () => {
   const [player, setPlayer] = React.useState({} as PLAYER);
+  const rotate = (matrix: PLAYER['tetromino']) => {
+    // Make the rows to become cols (transpose)
+    const mtrx = matrix.map((_, i) => matrix.map((column) => column[i]));
+    // Reverse each row to get a rotated matrix
+    return mtrx.map((row) => row.reverse());
+  };
+  const playerRotate = (stage: STAGE): void => {
+    const clonedPlayer = JSON.parse(JSON.stringify(player));
+    clonedPlayer.tetromino = rotate(clonedPlayer.tetromino);
+
+    // This one is so the player can't rotate into the walls or other tetrominos that's merged
+    const posX = clonedPlayer.pos.x;
+    let offset = 1;
+    while (isColliding(clonedPlayer, stage, { x: 0, y: 0 })) {
+      clonedPlayer.pos.x += offset;
+      offset = -(offset + (offset > 0 ? 1 : -1));
+
+      if (offset > clonedPlayer.tetromino[0].length) {
+        clonedPlayer.pos.x = posX;
+        return;
+      }
+    }
+
+    setPlayer(clonedPlayer);
+  };
   const updatePlayerPos = ({
     x,
     y,
@@ -40,5 +66,6 @@ export const usePlayer = () => {
     player,
     updatePlayerPos,
     resetPlayer,
+    playerRotate,
   };
 };
