@@ -32,6 +32,13 @@ const App: React.FC = () => {
       setDropTime(1000);
     }
   };
+  const handleStartGame = (): void => {
+    // Need to focus the window with the key events on start
+    if (gameArea.current) gameArea.current.focus();
+    // Reset everything
+    setStage(createStage());
+    setDropTime(1000);
+  };
   const move = ({
     keyCode,
     repeat,
