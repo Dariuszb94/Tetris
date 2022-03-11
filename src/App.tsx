@@ -60,6 +60,12 @@ const App: React.FC = () => {
       // Rotation
     }
   };
+  const drop = (): void => {
+    updatePlayerPos({ x: 0, y: 1, collided: false });
+  };
+  useInterval(() => {
+    drop();
+  }, dropTime);
   return (
     <StyledTetrisWrapper
       role='button'
@@ -83,7 +89,7 @@ const App: React.FC = () => {
             </>
           )}
         </div>
-        <Stage stage={createStage()} />
+        <Stage stage={stage} />
       </StyledTetris>
     </StyledTetrisWrapper>
   );
