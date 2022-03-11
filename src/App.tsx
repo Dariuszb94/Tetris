@@ -73,7 +73,7 @@ const App: React.FC = () => {
           {gameOver ? (
             <>
               <Display gameOver={gameOver} text='Game Over!' />
-              <StartButton callback={() => null} />
+              <StartButton callback={handleStartGame} />
             </>
           ) : (
             <>
