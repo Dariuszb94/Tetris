@@ -38,6 +38,8 @@ const App: React.FC = () => {
     // Reset everything
     setStage(createStage());
     setDropTime(1000);
+    resetPlayer();
+    setGameOver(false);
   };
   const move = ({
     keyCode,
