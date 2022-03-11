@@ -17,10 +17,20 @@ import { StyledTetrisWrapper, StyledTetris } from './App.styles';
 const App: React.FC = () => {
   const [dropTime, setDropTime] = React.useState<null | number>(null);
   const [gameOver, setGameOver] = React.useState(true);
+
+  const gameArea = React.useRef<HTMLDivElement>(null);
+
   const { player, updatePlayerPos, resetPlayer } = usePlayer();
   const { stage, setStage } = useStage(player, resetPlayer);
   const movePlayer = (dir: number) => {
     updatePlayerPos({ x: dir, y: 0, collided: false });
+  };
+  const keyUp = ({ keyCode }: { keyCode: number }): void => {
+    // Change the droptime speed when user releases down arrow
+
+    if (keyCode === 40) {
+      setDropTime(1000);
+    }
   };
   const move = ({
     keyCode,
@@ -42,7 +52,13 @@ const App: React.FC = () => {
     }
   };
   return (
-    <StyledTetrisWrapper role='button' tabIndex={0}>
+    <StyledTetrisWrapper
+      role='button'
+      tabIndex={0}
+      onKeyDown={move}
+      onKeyUp={keyUp}
+      ref={gameArea}
+    >
       <StyledTetris>
         <div className='display'>
           {gameOver ? (
